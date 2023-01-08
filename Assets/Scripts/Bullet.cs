@@ -9,6 +9,7 @@ public class Bullet : MonoBehaviour
     private bool _hitted = false;
     public Vector3 targetVector;
     public int speed = 10;
+    public int gunPower = 1;
     float maxLifeTime = 3;
 
     [SerializeField]
@@ -41,8 +42,21 @@ public class Bullet : MonoBehaviour
             {
                 destroyObjects();
             }
-            Destroy(collision.gameObject);
-            Player.score++;
+
+            // Reduce meteor's life
+            Meteor meteorScript = collision.gameObject.GetComponent<Meteor>();
+
+            // Multiple bullets could hit the meteor so we must check that the meteor stills has life
+            if (meteorScript.lifePoints > 0)
+            {
+                meteorScript.lifePoints -= gunPower;
+                if (meteorScript.lifePoints <= 0)
+                {
+                    Player.score += gunPower;
+                    Destroy(collision.gameObject);
+                }
+            }
+
             RefreshUI();
         }
     }

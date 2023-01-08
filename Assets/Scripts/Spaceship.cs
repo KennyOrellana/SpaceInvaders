@@ -6,4 +6,8 @@ using UnityEngine;
 public class Spaceship
 {
     public Sprite spaceshipSprite;
+    public RuntimeAnimatorController animatorController;
+    public float speed;
+    public float rotationSpeed;
+    public int gunPower;
 }

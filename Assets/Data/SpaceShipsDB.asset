@@ -14,6 +14,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spaceships:
   - spaceshipSprite: {fileID: 21300000, guid: afc3fad27b7f1d84c8d171748e728f34, type: 3}
+    animatorController: {fileID: 9100000, guid: f1be18ea28789c540919a261caf6c01d, type: 2}
+    speed: 2
+    rotationSpeed: 1
+    gunPower: 1
   - spaceshipSprite: {fileID: 21300000, guid: 2b8dc303e0fba1a4588556f220936760, type: 3}
+    animatorController: {fileID: 9100000, guid: b32a656f4c59db248a27b6960152ca0c, type: 2}
+    speed: 3
+    rotationSpeed: 3
+    gunPower: 2
   - spaceshipSprite: {fileID: 21300000, guid: d0ee9c3fd0646424f8c3fcbc1c074b5c, type: 3}
+    animatorController: {fileID: 9100000, guid: 2b2ccacd92579be4087543dafb8fe699, type: 2}
+    speed: 4
+    rotationSpeed: 5
+    gunPower: 3
   - spaceshipSprite: {fileID: 21300000, guid: 82253e24770055444afdce6e93e2fe71, type: 3}
+    animatorController: {fileID: 9100000, guid: 9e0f093749e3c3041b25aabde9327c6e, type: 2}
+    speed: 5
+    rotationSpeed: 10
+    gunPower: 4

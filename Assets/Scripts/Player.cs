@@ -1,35 +1,41 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
     private bool _gameOver = false;
     Rigidbody _rigid;
-    public float _speed = 5f;
-    public float _speedRotation = 1000f;
+    private float _speed = 5f;
+    private float _speedRotation = 1000f;
+    private int _gunPower = 1;
     public static float borderLimitX;
     public static float borderLimitY;
     public GameObject bulletPrefab;
-    public GameObject gun;
+    public GameObject gunMain;
+    public GameObject gunLeft;
+    public GameObject gunRigh;
 
     public Vector3 targetVector;
     public static int score;
     public SpaceshipDB spaceshipDB;
     public SpriteRenderer artworkSprite;
+    public Animator animator;
     private int selectedOption = 0;    // Start is called before the first frame update
 
     // Audio
     private AudioSource _audioSource;
     void Start()
     {
-        PrepareSpaceship();
-
         _audioSource = GetComponent<AudioSource>();
         _rigid = GetComponent<Rigidbody>();
+        animator = GetComponent<Animator>();
 
         borderLimitX = Camera.main.orthographicSize + 4;
         borderLimitY = (Camera.main.orthographicSize + 1) * Screen.width / Screen.height;
+
+        PrepareSpaceship();
     }
 
     private void PrepareSpaceship()
@@ -49,6 +55,10 @@ public class Player : MonoBehaviour
     {
         Spaceship spaceship = spaceshipDB.GetSpaceship(selectedOption);
         artworkSprite.sprite = spaceship.spaceshipSprite;
+        animator.runtimeAnimatorController = spaceship.animatorController;
+        _gunPower = spaceship.gunPower;
+        _speed = spaceship.speed;
+        _speedRotation = 100f * spaceship.rotationSpeed;
     }
 
     private void FixedUpdate()
@@ -85,9 +95,11 @@ public class Player : MonoBehaviour
         // Set targetVector for bullet's direction
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            GameObject bullet = Instantiate(bulletPrefab, gun.transform.position, Quaternion.identity);
-            Bullet bulletScript = bullet.GetComponent<Bullet>();
-            bulletScript.targetVector = transform.up;
+            shoot();
+        }
+        else if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            SceneManager.LoadScene("Hangar");
         }
 
         checkGameOver();
@@ -124,5 +136,39 @@ public class Player : MonoBehaviour
         _gameOver = false;
         Application.LoadLevel(Application.loadedLevel);
         score = 0;
+    }
+
+    private void shoot()
+    {
+        switch (_gunPower)
+        {
+            case 1:
+                createBullet(gunMain);
+                break;
+            case 2:
+                createBullet(gunLeft);
+                createBullet(gunRigh);
+                break;
+            case 3:
+                createBullet(gunMain);
+                createBullet(gunLeft);
+                createBullet(gunRigh);
+                break;
+            case 4:
+                createBullet(gunMain);
+                createBullet(gunLeft);
+                createBullet(gunRigh);
+                break;
+
+        }
+    }
+
+    private void createBullet(GameObject gun)
+    {
+        GameObject bullet = Instantiate(bulletPrefab, gun.transform.position, Quaternion.identity);
+        bullet.transform.localScale = new Vector3(0.05f * _gunPower, 0.05f * _gunPower, 0.05f);
+        Bullet bulletScript = bullet.GetComponent<Bullet>();
+        bulletScript.targetVector = transform.up;
+        bulletScript.gunPower = _gunPower;
     }
 }
