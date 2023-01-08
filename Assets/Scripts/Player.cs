@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     public GameObject gun;
 
     public Vector3 targetVector;
+    public static int score;
 
     // Start is called before the first frame update
     void Start()
@@ -68,6 +69,7 @@ public class Player : MonoBehaviour
         if (collision.gameObject.tag == "Enemy")
         {
             Application.LoadLevel(Application.loadedLevel);
+            score = 0;
         }
     }
 }
