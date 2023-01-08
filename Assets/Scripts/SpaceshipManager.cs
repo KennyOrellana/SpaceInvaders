@@ -21,6 +21,22 @@ public class SpaceshipManager : MonoBehaviour
         UpdateSpaceship(selectedOption);
     }
 
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return))
+        {
+            StartLevel(0);
+        }
+        else if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            NextOption();
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            BackOption();
+        }
+    }
+
     public void NextOption()
     {
         selectedOption++;
@@ -59,7 +75,7 @@ public class SpaceshipManager : MonoBehaviour
         PlayerPrefs.SetInt("selectedOption", selectedOption);
     }
 
-    public void StartLevelOne(int sceneId)
+    public void StartLevel(int sceneId)
     {
         SceneManager.LoadScene(sceneId);
     }

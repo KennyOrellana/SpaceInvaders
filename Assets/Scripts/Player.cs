@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    private bool _gameOver = false;
     Rigidbody _rigid;
     public float _speed = 5f;
     public float _speedRotation = 1000f;
@@ -17,10 +18,14 @@ public class Player : MonoBehaviour
     public SpaceshipDB spaceshipDB;
     public SpriteRenderer artworkSprite;
     private int selectedOption = 0;    // Start is called before the first frame update
+
+    // Audio
+    private AudioSource _audioSource;
     void Start()
     {
         PrepareSpaceship();
 
+        _audioSource = GetComponent<AudioSource>();
         _rigid = GetComponent<Rigidbody>();
 
         borderLimitX = Camera.main.orthographicSize + 4;
@@ -84,14 +89,40 @@ public class Player : MonoBehaviour
             Bullet bulletScript = bullet.GetComponent<Bullet>();
             bulletScript.targetVector = transform.up;
         }
+
+        checkGameOver();
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "Enemy")
         {
-            Application.LoadLevel(Application.loadedLevel);
-            score = 0;
+            _gameOver = true;
+            if (_audioSource != null)
+            {
+                _audioSource.Play();
+            }
+            else
+            {
+                resetLevel();
+            }
+
         }
+    }
+
+    private void checkGameOver()
+    {
+        if (_gameOver && _audioSource != null && !_audioSource.isPlaying)
+        {
+            resetLevel();
+        }
+
+    }
+
+    private void resetLevel()
+    {
+        _gameOver = false;
+        Application.LoadLevel(Application.loadedLevel);
+        score = 0;
     }
 }
