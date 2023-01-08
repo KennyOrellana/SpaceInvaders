@@ -25,7 +25,7 @@ public class SpaceshipManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return))
         {
-            StartLevel("LevelOne");
+            StartLevel();
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
@@ -75,7 +75,7 @@ public class SpaceshipManager : MonoBehaviour
         PlayerPrefs.SetInt("selectedOption", selectedOption);
     }
 
-    public void StartLevel(string sceneId)
+    public void StartLevel()
     {
         SceneManager.LoadScene("LevelOne");
     }
